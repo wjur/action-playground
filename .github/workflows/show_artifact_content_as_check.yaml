@@ -1,0 +1,34 @@
+  name: show-artifact-as-check
+
+  on: [pull_request]
+
+  jobs:
+    show-artifact:
+      runs-on: ubuntu-20.04
+      steps:
+        - name: "Wait for action to generate artifact"
+          uses: actions/github-script@v5
+          with:
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            script: |
+              const { data: runs } = await github.actions.listRepoWorkflowRuns({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'pr-artifact',
+                branch: context.payload.pull_request.head.ref,
+                event: 'pull_request',
+                status: 'completed',
+              });
+              const latestRun = runs[0];
+              console.log(`Latest run status: ${latestRun.status}`);
+              return latestRun.status;
+        - name: "Download artifact from run ${{ github.event.workflow_run.id }}"
+          uses: actions/download-artifact@v4
+          with:
+            name: pr_name
+            path: pr_name
+            run-id: ${{ github.event.workflow_run.id }}
+            github-token: ${{ github.token }}
+        - name: "Verify pr_name.txt content"
+          run: |
+            cat pr_name/pr_name.txt
