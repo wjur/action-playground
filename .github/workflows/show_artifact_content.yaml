@@ -11,7 +11,7 @@
     show-artifact:
       runs-on: ubuntu-20.04
       steps:
-        - name: "Download artifact"
+        - name: "Download artifact from run ${{ github.event.workflow_run.id }}"
           uses: actions/download-artifact@v4
           with:
             name: pr_name
