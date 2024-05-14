@@ -15,9 +15,9 @@
           uses: actions/download-artifact@v4
           with:
             name: pr_name
-            path: pr_name.txt
+            path: pr_name
             run-id: ${{ github.event.workflow_run.id }}
             github-token: ${{ github.token }}
         - name: "Verify pr_name.txt content"
           run: |
-            cat pr_name.txt
+            cat pr_name/pr_name.txt
