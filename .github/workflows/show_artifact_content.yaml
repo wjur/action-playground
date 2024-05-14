@@ -8,9 +8,12 @@
         - completed
 
   jobs:
-    generate-artifact:
+    show-artifact:
       runs-on: ubuntu-20.04
       steps:
+        - name: "Debug trigger event"
+          run:
+            cat "github.event.workflow_run=${{ github.event.workflow_run }}"
         - name: "Download artifact"
           uses: actions/download-artifact@v4
           with:
