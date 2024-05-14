@@ -1,0 +1,21 @@
+  name: show-artifact
+
+  on:
+    workflow_run:
+      workflows:
+        - pr-artifact
+      types:
+        - completed
+
+  jobs:
+    generate-artifact:
+      runs-on: ubuntu-20.04
+      steps:
+        - name: "Download artifact"
+          uses: actions/download-artifact@v4
+          with:
+            name: pr_name
+            path: pr_name.txt
+        - name: "Verify pr_name.txt content"
+          run: |
+            cat pr_name.txt
