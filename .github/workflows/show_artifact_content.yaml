@@ -16,6 +16,7 @@
           with:
             name: pr_name
             path: pr_name.txt
+            run-id: ${{ github.event.workflow_run.id }}
         - name: "Verify pr_name.txt content"
           run: |
             cat pr_name.txt
