@@ -1,0 +1,23 @@
+  name: pr-artifact
+
+  on: [pull_request]
+
+  jobs:
+    generate-artifact:
+      runs-on: ubuntu-20.04
+      steps:
+        - name: "Print Title of PR"
+          run: echo The Title of your PR is ${{ github.event.pull_request.title }}
+        - name: "Generate artifact"
+          run: |
+            pr_name="${{ github.event.pull_request.title }}"
+            echo "${pr_name}" > pr_name.txt
+        - name: "Verify pr_name.txt content"
+          run: |
+            cat pr_name.txt
+        - name: "Upload pr_name.txt artifact ${{ github.event.pull_request.title }}"
+          uses: actions/upload-artifact@v4
+          with:
+            name: pr_name
+            path: pr_name.txt
+            overwrite: true
