@@ -21,3 +21,11 @@
             name: pr_name
             path: pr_name.txt
             overwrite: true
+        - name: "Download artifact from run "
+          uses: actions/download-artifact@v4
+          with:
+            name: pr_name
+            path: pr_name2.txt
+        - name: "Verify pr_name2.txt content"
+          run: |
+            cat pr_name2.txt
