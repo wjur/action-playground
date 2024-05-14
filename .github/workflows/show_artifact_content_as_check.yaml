@@ -8,22 +8,13 @@
     show-artifact:
       runs-on: ubuntu-20.04
       steps:
-        - name: "Wait for action to generate artifact"
-          uses: actions/github-script@v5
+        - name: Wait for tests to succeed
+          uses: lewagon/wait-on-check-action@v1.3.4
           with:
-            github-token: ${{ secrets.GITHUB_TOKEN }}
-            script: |
-              const { data: runs } = await github.actions.listRepoWorkflowRuns({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                workflow_id: 'pr-artifact',
-                branch: context.payload.pull_request.head.ref,
-                event: 'pull_request',
-                status: 'completed',
-              });
-              const latestRun = runs[0];
-              console.log(`Latest run status: ${latestRun.status}`);
-              return latestRun.status;
+            ref: ${{ github.ref }}
+            check-name: 'pr-artifact'
+            repo-token: ${{ secrets.GITHUB_TOKEN }}
+            wait-interval: 10
         - name: "Download artifact from run ${{ github.event.workflow_run.id }}"
           uses: actions/download-artifact@v4
           with:
