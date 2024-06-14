@@ -4,6 +4,6 @@
 
   jobs:
     job-with-conditional-step:
-      uses: "./conditional-step.yaml"
+      uses: "./conditional-step.yaml@master"
       with:
         SHOULD_RUN: true
