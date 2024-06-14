@@ -14,12 +14,12 @@
       runs-on: ubuntu-20.04
       steps:
         - name: "First step ${{inputs.SHOULD_RUN}} :D"
+          id: first-step
           run: >
             echo "This is the first step"
 
         - name: "Conditional step"
-          if: >
-            inputs.SHOULD_RUN == 'true'
+          if: steps.first-step.conclusion == 'success'
           run: echo "This is the conditional step"
 
         - name: "Last step"
