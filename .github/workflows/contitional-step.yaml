@@ -18,7 +18,8 @@
             echo "This is the first step"
 
         - name: "Conditional step"
-          if: "${{ inputs.SHOULD_RUN }} == 'true'"
+          if: >
+            inputs.SHOULD_RUN == 'true'
           run: echo "This is the conditional step"
 
         - name: "Last step"
