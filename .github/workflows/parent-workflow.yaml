@@ -1,6 +1,6 @@
   name: parent-workflow
 
-  on: [workflow_call]
+  on: [workflow_dispatch]
 
   jobs:
     job-with-conditional-step:
