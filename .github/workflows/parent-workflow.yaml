@@ -4,6 +4,6 @@
 
   jobs:
     job-with-conditional-step:
-      uses: "./.github/workflows/contitional-step.yaml@master"
+      uses: "./.github/workflows/contitional-step.yaml"
       with:
         SHOULD_RUN: true
