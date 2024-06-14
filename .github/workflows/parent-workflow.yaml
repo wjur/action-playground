@@ -1,0 +1,9 @@
+  name: parent-workflow
+
+  on: [workflow_call]
+
+  jobs:
+    job-with-conditional-step:
+      uses: "./conditional-step.yaml"
+      with:
+        SHOULD_RUN: true
