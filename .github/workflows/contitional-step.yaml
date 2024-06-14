@@ -1,0 +1,24 @@
+  name: conditional-step
+
+  on:
+    workflow_call:
+      inputs:
+        SHOULD_RUN:
+          description: Should it run?
+          type: boolean
+          required: false
+          default: false
+
+  jobs:
+    job-with-conditional-step:
+      runs-on: ubuntu-20.04
+      steps:
+        - name: "First step"
+          run: echo "This is the first step"
+
+        - name: "Conditional step"
+          if: "${{ inputs.SHOULD_RUN }} == 'true'"
+          run: echo "This is the conditional step"
+
+        - name: "Last step"
+          run: echo "This is the last step"
