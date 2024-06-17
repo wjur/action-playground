@@ -18,7 +18,7 @@
           run: >
             echo "This is the first step"
 
-        - name: "Conditional step"
+        - name: "Conditional step X"
           if: ${{ inputs.SHOULD_RUN == 'true' }} && steps.first-step.conclusion == 'success'
           run: echo "This is the conditional step"
 
