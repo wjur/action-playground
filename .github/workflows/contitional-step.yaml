@@ -13,7 +13,7 @@
     job-with-conditional-step:
       runs-on: ubuntu-20.04
       steps:
-        - name: "First step ${{inputs.SHOULD_RUN}} :D"
+        - name: "First step ${{inputs.SHOULD_RUN}} ::: ${{ inputs.SHOULD_RUN == 'true' }} :D"
           id: first-step
           run: >
             echo "This is the first step"
