@@ -19,7 +19,7 @@
             echo "This is the first step"
 
         - name: "Conditional step"
-          if: ${{ inputs.SHOULD_RUN == true }} && steps.first-step.conclusion == 'success'
+          if: ${{ inputs.SHOULD_RUN == 'true' }} && steps.first-step.conclusion == 'success'
           run: echo "This is the conditional step"
 
         - name: "Last step"
