@@ -1,4 +1,4 @@
-  name: show-artifact-as-check
+  name: set-check-status
 
   on:
     workflow_dispatch:
