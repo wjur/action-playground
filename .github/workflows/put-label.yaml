@@ -34,7 +34,7 @@ jobs:
           echo "First common commit (merge base) between $COMMIT_SHA (${{ github.event.workflow_run.head_branch }}) and main: $MERGE_BASE"
           echo "head_commit=$COMMIT_SHA" >> $GITHUB_OUTPUT
           echo "merge_base=$MERGE_BASE" >> $GITHUB_OUTPUT
-  get-pr-coverage:
+  get-commit-artifacts:
     needs: [setup]
     runs-on: ubuntu-latest
     defaults:
@@ -48,5 +48,53 @@ jobs:
         run: |
           echo "head_commit=$HEAD_COMMIT"
           echo "merge_base=$MERGE_COMMIT"
+      - name: "Download artifact from run ${{ github.event.workflow_run.id }}"
+        uses: actions/download-artifact@v4
+        with:
+          name: pr_name
+          path: head_pr_name
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+      - name: Get head artifact ID
+        id: get_artifact_id
+        env:
+          HEAD_COMMIT: ${{needs.setup.outputs.head_commit}}
+        run: |
+          artifact_id=$(gh api repos/${{ github.repository }}/actions/artifacts --jq ".artifacts[] | select(.workflow_run.head_sha == \"$HEAD_COMMIT\") | .id")
+          echo "artifact_id=$artifact_id" >> $GITHUB_OUTPUT
+
+      - name: Download head artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: pr_name
+          path: head_pr_name
+          github-token: ${{ github.token }}
+          if-no-files-found: error
+          artifact_id: ${{ steps.get_artifact_id.outputs.artifact_id }}
+
+      - name: Get merge artifact ID
+        id: get_merge_artifact_id
+        env:
+          MERGE_COMMIT: ${{needs.setup.outputs.merge_base}}
+        run: |
+          artifact_id=$(gh api repos/${{ github.repository }}/actions/artifacts --jq ".artifacts[] | select(.workflow_run.head_sha == \"$MERGE_COMMIT\") | .id")
+          echo "artifact_id=$artifact_id" >> $GITHUB_OUTPUT
+
+      - name: Download merge artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: pr_name
+          path: merge_pr_name
+          github-token: ${{ github.token }}
+          if-no-files-found: error
+          artifact_id: ${{ steps.get_merge_artifact_id.outputs.artifact_id }}
+      - name: "Verify contents"
+        run: |
+          ls .
+          echo "head_pr_name:"
+          cat head_pr_name/pr_name.txt
+          
+          echo "merge_pr_name:"
+          cat merge_pr_name/pr_name.txt
           
         
