@@ -28,7 +28,7 @@ jobs:
         run: |
           COMMIT_SHA=${{ github.event.workflow_run.head_commit.id }}
           git fetch origin master
-          MERGE_BASE=$(git merge-base $COMMIT_SHA origin/main)
+          MERGE_BASE=$(git merge-base $COMMIT_SHA origin/master)
           echo "First common commit (merge base) between $COMMIT_SHA (${{ github.event.workflow_run.head_branch }}) and main: $MERGE_BASE"
           echo "head_commit=$COMMIT_SHA" >> $GITHUB_OUTPUT
           echo "merge_base=$MERGE_BASE" >> $GITHUB_OUTPUT
