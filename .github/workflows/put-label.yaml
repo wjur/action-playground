@@ -48,14 +48,14 @@ jobs:
         run: |
           echo "head_commit=$HEAD_COMMIT"
           echo "merge_base=$MERGE_COMMIT"
-      - name: Get head artifact ID
-        id: get_artifact_id
+      - name: Get head workflow_run_id
+        id: get_workflow_run_id
         env:
           HEAD_COMMIT: ${{needs.setup.outputs.head_commit}}
           GH_TOKEN: ${{ github.token }}
         run: |
-          artifact_id=$(gh api repos/${{ github.repository }}/actions/artifacts --jq ".artifacts[] | select(.workflow_run.head_sha == \"$HEAD_COMMIT\") | .id")
-          echo "artifact_id=$artifact_id" >> $GITHUB_OUTPUT
+          workflow_run_id=$(gh api repos/${{ github.repository }}/actions/artifacts --jq ".artifacts[] | select(.workflow_run.head_sha == \"$HEAD_COMMIT\") | .workflow_run.id")
+          echo "workflow_run_id=workflow_run_id" >> $GITHUB_OUTPUT
 
       - name: Download head artifact
         uses: actions/download-artifact@v4
@@ -63,17 +63,16 @@ jobs:
           name: pr_name
           path: head_pr_name
           github-token: ${{ github.token }}
-          if-no-files-found: error
-          artifact_id: ${{ steps.get_artifact_id.outputs.artifact_id }}
+          run_id: ${{ steps.get_workflow_run_id.outputs.workflow_run_id }}
 
-      - name: Get merge artifact ID
-        id: get_merge_artifact_id
+      - name: Get merge workflow_run_id
+        id: get_merge_workflow_run_id
         env:
           MERGE_COMMIT: ${{needs.setup.outputs.merge_base}}
           GH_TOKEN: ${{ github.token }}
         run: |
-          artifact_id=$(gh api repos/${{ github.repository }}/actions/artifacts --jq ".artifacts[] | select(.workflow_run.head_sha == \"$MERGE_COMMIT\") | .id")
-          echo "artifact_id=$artifact_id" >> $GITHUB_OUTPUT
+          workflow_run_id=$(gh api repos/${{ github.repository }}/actions/artifacts --jq ".artifacts[] | select(.workflow_run.head_sha == \"MERGE_COMMIT\") | .workflow_run.id")
+          echo "workflow_run_id=workflow_run_id" >> $GITHUB_OUTPUT
 
       - name: Download merge artifact
         uses: actions/download-artifact@v4
@@ -82,7 +81,7 @@ jobs:
           path: merge_pr_name
           github-token: ${{ github.token }}
           if-no-files-found: error
-          artifact_id: ${{ steps.get_merge_artifact_id.outputs.artifact_id }}
+          artifact_id: ${{ steps.get_merge_workflow_run_id.outputs.workflow_run_id }}
       - name: "Verify contents"
         run: |
           ls .
