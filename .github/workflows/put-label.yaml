@@ -3,7 +3,7 @@ name: put-label
 
 on:
   workflow_run:
-    workflows: [ "generate-pr-artifact" ]
+    workflows: [ "pr-artifact" ]
     types:
       - completed
 

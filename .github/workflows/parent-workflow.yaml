@@ -1,9 +1,0 @@
-  name: parent-workflow
-
-  on: [workflow_dispatch]
-
-  jobs:
-    invoke-job-with-conditional-step:
-      uses: "./.github/workflows/contitional-step.yaml"
-      with:
-        SHOULD_RUN: true
