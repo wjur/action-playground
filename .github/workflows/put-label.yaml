@@ -26,7 +26,7 @@ jobs:
       - name: Find first common commit
         id: find-common-commit
         run: |
-          COMMIT_SHA=${{ github.event.workflow_run.head_commit.id }} head_branch
+          COMMIT_SHA=${{ github.event.workflow_run.head_commit.id }}
           git fetch origin main
           MERGE_BASE=$(git merge-base $COMMIT_SHA origin/main)
           echo "First common commit (merge base) between $COMMIT_SHA (${{ github.event.workflow_run.head_branch }}) and main: $MERGE_BASE"
