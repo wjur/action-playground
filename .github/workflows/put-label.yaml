@@ -48,13 +48,6 @@ jobs:
         run: |
           echo "head_commit=$HEAD_COMMIT"
           echo "merge_base=$MERGE_COMMIT"
-      - name: "Download artifact from run ${{ github.event.workflow_run.id }}"
-        uses: actions/download-artifact@v4
-        with:
-          name: pr_name
-          path: head_pr_name
-          run-id: ${{ github.event.workflow_run.id }}
-          github-token: ${{ github.token }}
       - name: Get head artifact ID
         id: get_artifact_id
         env:
