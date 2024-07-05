@@ -1,0 +1,50 @@
+---
+name: put-label
+
+on:
+  workflow_run:
+    workflows: [ "generate-pr-artifact" ]
+    types:
+      - completed
+
+permissions: write-all
+
+jobs:
+  setup:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      head_commit: ${{ steps.find-common-commit.outputs.head_commit }}
+      merge_base: ${{ steps.find-common-commit.outputs.merge_base }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Find first common commit
+        id: find-common-commit
+        run: |
+          COMMIT_SHA=${{ github.event.workflow_run.head_commit.id }} head_branch
+          git fetch origin main
+          MERGE_BASE=$(git merge-base $COMMIT_SHA origin/main)
+          echo "First common commit (merge base) between $COMMIT_SHA (${{ github.event.workflow_run.head_branch }}) and main: $MERGE_BASE"
+          echo "head_commit=$COMMIT_SHA" >> $GITHUB_OUTPUT
+          echo "merge_base=$MERGE_BASE" >> $GITHUB_OUTPUT
+  get-pr-coverage:
+    needs: [setup]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Print shas
+        env:
+          HEAD_COMMIT: ${{needs.setup.outputs.head_commit}}
+          MERGE_COMMIT: ${{needs.setup.outputs.merge_base}}
+        run: |
+          echo "head_commit=$HEAD_COMMIT"
+          echo "merge_base=$MERGE_COMMIT"
+          
+        
