@@ -63,7 +63,7 @@ jobs:
           name: pr_name
           path: head_pr_name
           github-token: ${{ github.token }}
-          run_id: ${{ steps.get_workflow_run_id.outputs.workflow_run_id }}
+          run-id: ${{ steps.get_workflow_run_id.outputs.workflow_run_id }}
 
       - name: Get merge workflow_run_id
         id: get_merge_workflow_run_id
@@ -80,8 +80,7 @@ jobs:
           name: pr_name
           path: merge_pr_name
           github-token: ${{ github.token }}
-          if-no-files-found: error
-          artifact_id: ${{ steps.get_merge_workflow_run_id.outputs.workflow_run_id }}
+          run-id: ${{ steps.get_merge_workflow_run_id.outputs.workflow_run_id }}
       - name: "Verify contents"
         run: |
           ls .
