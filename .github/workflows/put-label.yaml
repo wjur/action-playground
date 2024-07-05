@@ -55,7 +55,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           workflow_run_id=$(gh api repos/${{ github.repository }}/actions/artifacts --jq ".artifacts[] | select(.workflow_run.head_sha == \"$HEAD_COMMIT\") | .workflow_run.id")
-          echo "workflow_run_id=workflow_run_id" >> $GITHUB_OUTPUT
+          echo "workflow_run_id=$workflow_run_id" >> $GITHUB_OUTPUT
 
       - name: Download head artifact
         uses: actions/download-artifact@v4
@@ -72,7 +72,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           workflow_run_id=$(gh api repos/${{ github.repository }}/actions/artifacts --jq ".artifacts[] | select(.workflow_run.head_sha == \"MERGE_COMMIT\") | .workflow_run.id")
-          echo "workflow_run_id=workflow_run_id" >> $GITHUB_OUTPUT
+          echo "workflow_run_id=$workflow_run_id" >> $GITHUB_OUTPUT
 
       - name: Download merge artifact
         uses: actions/download-artifact@v4
