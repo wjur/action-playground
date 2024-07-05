@@ -83,11 +83,10 @@ jobs:
           run-id: ${{ steps.get_merge_workflow_run_id.outputs.workflow_run_id }}
       - name: "Verify contents"
         run: |
-          ls .
-          echo "head_pr_name:"
-          cat head_pr_name/pr_name.txt
+          head_content=$(cat head_pr_name/pr_name.txt)
+          echo "head_content=$head_content"
           
-          echo "merge_pr_name:"
-          cat merge_pr_name/pr_name.txt
+          base_content=$(cat merge_pr_name/pr_name.txt)
+          echo "base_content=$base_content"
           
         
