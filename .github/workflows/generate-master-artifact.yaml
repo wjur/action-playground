@@ -5,6 +5,8 @@
       branches:
         - master
 
+  permissions: write-all
+
   jobs:
     generate-artifact:
       runs-on: ubuntu-20.04
