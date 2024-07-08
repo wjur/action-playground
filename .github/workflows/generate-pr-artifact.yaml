@@ -32,7 +32,7 @@
             if [ "$lowers_coverage" -ge "0" ]; then
               label_to_add="good-coverage"
             else
-              label_to_add="low-covers"
+              label_to_add="low-coverage"
             fi          
 
         - name: Add label to PR
@@ -44,7 +44,7 @@
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: context.issue.number,
-                labels: ['good-coverage', 'low-covers']
+                labels: ['good-coverage', 'low-coverage']
               })
               
               github.rest.issues.addLabels({
