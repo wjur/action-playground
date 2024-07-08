@@ -27,13 +27,13 @@
             else
               lowers_coverage=$(echo "$coverage > $current_coverage" |bc -l)
               echo "lowers_coverage = $lowers_coverage"
+        
+              if [ "$lowers_coverage" -ge "0" ]; then
+                label_to_add="good-coverage"
+              else
+                label_to_add="low-coverage"
+              fi 
             fi
-            
-            if [ "$lowers_coverage" -ge "0" ]; then
-              label_to_add="good-coverage"
-            else
-              label_to_add="low-coverage"
-            fi 
             
             echo "label_to_add=$label_to_add" >> "$GITHUB_OUTPUT"
 
