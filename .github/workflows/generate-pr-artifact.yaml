@@ -15,10 +15,14 @@
             ref: ${{ github.event.pull_request.head.sha }}
         - name: Analyze tags
           run: |
+            current_coverage=${{ github.event.pull_request.title }}
             last_coverage_tag=$(git describe --tags --abbrev=0 --match="coverage-*")
             echo "Last coverage tag = $last_coverage_tag"
             coverage="${last_coverage_tag##*-}"
             echo "Last coverage = $coverage"
+            lowers_coverage=$(echo "$coverage > current_coverage" |bc -l)
+            echo "lowers_coverage = lowers_coverage"
+
         - name: Add label to PR
           uses: actions/github-script@v7
           with:
