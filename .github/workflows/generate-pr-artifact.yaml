@@ -21,7 +21,7 @@
             coverage="${last_coverage_tag##*-}"
             echo "Last coverage = $coverage"
             lowers_coverage=$(echo "$coverage > current_coverage" |bc -l)
-            echo "lowers_coverage = lowers_coverage"
+            echo "lowers_coverage = $lowers_coverage"
 
         - name: Add label to PR
           uses: actions/github-script@v7
