@@ -29,7 +29,7 @@
               echo "lowers_coverage = $lowers_coverage"
             fi
             
-            if [ "$lowers_coverage" -gt "0" ]; then
+            if [ "$lowers_coverage" -gte "0" ]; then
               label_to_add="good-coverage"
             else
               label_to_add="low-covers"
