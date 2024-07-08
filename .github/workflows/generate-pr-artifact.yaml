@@ -39,7 +39,7 @@
             fi
             
             echo "label_to_add=$label_to_add" >> "$GITHUB_OUTPUT"
-            echo "label_to_remove=label_to_remove" >> "$GITHUB_OUTPUT"
+            echo "label_to_remove=$label_to_remove" >> "$GITHUB_OUTPUT"
 
         - name: Add label to PR
           if: ${{ steps.analyze-tags.outputs.label_to_add != '' }}
