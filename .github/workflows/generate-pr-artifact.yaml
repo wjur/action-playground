@@ -10,6 +10,7 @@
           uses: actions/checkout@v4
           with:
             fetch-depth: 0
+            ref: ${{ github.event.pull_request.head.sha }}
         - name: Analyze tags
           run: |
             last_coverage_tag=$(git describe --tags --abbrev=0 --match="coverage-*")
