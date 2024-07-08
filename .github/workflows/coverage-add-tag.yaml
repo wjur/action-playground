@@ -1,7 +1,7 @@
 ---
 name: coverage-add-tag
 on:
-  workflow_dispatch:
+  workflow_call:
    inputs:
      commit_sha:
        required: true
