@@ -29,7 +29,7 @@
               lowers_coverage=$(echo "$coverage > $current_coverage" |bc -l)
               echo "lowers_coverage = $lowers_coverage"
         
-              if [ "$lowers_coverage" -ge "0" ]; then
+              if [ "$lowers_coverage" -ge "1" ]; then
                 label_to_add="good-coverage"
                 label_to_remove="low-coverage"
               else
@@ -57,7 +57,7 @@
                 if (error.status !== 404) {
                 throw error;
                 } else {
-                console.log('Label ${{ steps.analyze-tags.outputs.label_to_add }} does not exist, continuing...');
+                console.log('Label ${{ steps.analyze-tags.outputs.label_to_remove }} does not exist, continuing...');
                 }
               }
               
