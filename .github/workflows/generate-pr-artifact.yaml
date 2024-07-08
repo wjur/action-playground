@@ -24,18 +24,22 @@
             
             if [ "$last_coverage_tag" == "notfound" ]; then
               label_to_add=""
+              label_to_remove=""
             else
               lowers_coverage=$(echo "$coverage > $current_coverage" |bc -l)
               echo "lowers_coverage = $lowers_coverage"
         
               if [ "$lowers_coverage" -ge "0" ]; then
                 label_to_add="good-coverage"
+                label_to_remove="low-coverage"
               else
                 label_to_add="low-coverage"
+                label_to_remove="good-coverage"
               fi 
             fi
             
             echo "label_to_add=$label_to_add" >> "$GITHUB_OUTPUT"
+            echo "label_to_remove=label_to_remove" >> "$GITHUB_OUTPUT"
 
         - name: Add label to PR
           if: ${{ steps.analyze-tags.outputs.label_to_add != '' }}
@@ -47,28 +51,13 @@
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: context.issue.number,
-                  name: 'good-coverage'
+                  name: '${{ steps.analyze-tags.outputs.label_to_remove }}'
                 });
               } catch (error) {
                 if (error.status !== 404) {
                 throw error;
                 } else {
-                console.log('Label good-coverage does not exist, continuing...');
-                }
-              }
-              
-              try {
-                await github.rest.issues.removeLabel({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: context.issue.number,
-                  name: 'low-coverage'
-                });
-              } catch (error) {
-                if (error.status !== 404) {
-                throw error;
-                } else {
-                console.log('Label low-coverage does not exist, continuing...');
+                console.log('Label ${{ steps.analyze-tags.outputs.label_to_add }} does not exist, continuing...');
                 }
               }
               
