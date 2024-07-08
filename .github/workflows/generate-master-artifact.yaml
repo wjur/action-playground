@@ -9,6 +9,8 @@
     generate-artifact:
       runs-on: ubuntu-20.04
       steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
         - name: Create tag
           uses: ./.github/workflows/coverage-add-tag.yaml
           with:
