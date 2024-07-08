@@ -12,7 +12,7 @@
         - name: Checkout code
           uses: actions/checkout@v2
         - name: Create tag
-          uses: ./.github/workflows/coverage-add-tag.yaml
+          uses: "./.github/workflows/coverage-add-tag.yaml"
           with:
             commit_sha: ${{ github.event.push.head_commit }}
             coverage: "0.8"
