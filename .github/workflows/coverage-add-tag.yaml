@@ -1,0 +1,38 @@
+---
+name: coverage-add-tag
+on:
+  workflow_dispatch:
+   inputs:
+     commit_sha:
+       required: true
+       description: "Commit to tag"
+       type: string
+     coverage:
+       required: true
+       description: "Commit's coverage"
+       type: string
+
+
+permissions: write-all
+
+jobs:
+  coverage-add-tag:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ inputs.commit_sha }}
+      - name: Create and push tag
+        id: tag
+        run: |
+          TAG_NAME="coverage-$(date +'%Y%m%d%H%M%S')-${{ inputs.coverage }}"
+          echo "Tagging... $TAG_NAME"
+          git tag $TAG_NAME
+          git push origin $TAG_NAME
+      
+          
+        

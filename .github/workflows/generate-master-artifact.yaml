@@ -9,26 +9,8 @@
     generate-artifact:
       runs-on: ubuntu-20.04
       steps:
-        - name: "Print Title of PR"
-          run: echo The Title of your PR is ${{ github.event.push.head_commit }}
-        - name: "Generate artifact"
-          run: |
-            pr_name="main branch!"
-            echo "${pr_name}" > pr_name.txt
-        - name: "Verify pr_name.txt content"
-          run: |
-            cat pr_name.txt
-        - name: "Upload pr_name.txt artifact for M"
-          uses: actions/upload-artifact@v4
+        - name: Create tag
+          uses: workflows/coverage-add-tag.yaml
           with:
-            name: pr_name
-            path: pr_name.txt
-            overwrite: true
-        - name: "Download artifact from run "
-          uses: actions/download-artifact@v4
-          with:
-            name: pr_name
-            path: pr_name2
-        - name: "Verify pr_name2/pr_name.txt content"
-          run: |
-            cat pr_name2/pr_name.txt
+            commit_sha: ${{ github.event.push.head_commit }}
+            coverage: "0.8"
