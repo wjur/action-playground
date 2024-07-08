@@ -30,11 +30,11 @@
               echo "lowers_coverage = $lowers_coverage"
         
               if [ "$lowers_coverage" -ge "1" ]; then
-                label_to_add="good-coverage"
-                label_to_remove="low-coverage"
-              else
                 label_to_add="low-coverage"
                 label_to_remove="good-coverage"
+              else
+                label_to_add="good-coverage"
+                label_to_remove="end-coverage"
               fi 
             fi
             
