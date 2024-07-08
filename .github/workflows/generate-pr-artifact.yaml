@@ -17,7 +17,7 @@
           id: analyze-tags
           run: |
             current_coverage="${{ github.event.pull_request.title }}"
-            last_coverage_tag=$(git describe --tags --abbrev=0 --first-parent --match="xcoverage-*" || echo "notfound")
+            last_coverage_tag=$(git describe --tags --abbrev=0 --first-parent --match="coverage-*" || echo "notfound")
             echo "Last coverage tag = $last_coverage_tag"
             coverage="${last_coverage_tag##*-}"
             echo "Last coverage = $coverage"
