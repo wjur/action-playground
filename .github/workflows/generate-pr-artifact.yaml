@@ -29,9 +29,3 @@
         - name: "Verify pr_name2/pr_name.txt content"
           run: |
             cat pr_name2/pr_name.txt
-        - name: Create Tag
-          id: tag
-          run: |
-            TAG_NAME="v$(date +'%Y%m%d%H%M%S')"
-            git tag $TAG_NAME
-            git push origin $TAG_NAME

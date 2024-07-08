@@ -41,6 +41,12 @@ jobs:
       run:
         shell: bash
     steps:
+      - name: Create Tag
+        id: tag
+        run: |
+          TAG_NAME="v$(date +'%Y%m%d%H%M%S')"
+          git tag $TAG_NAME
+          git push origin $TAG_NAME
       - name: Print shas
         env:
           HEAD_COMMIT: ${{needs.setup.outputs.head_commit}}
@@ -88,5 +94,6 @@ jobs:
           
           base_content=$(cat merge_pr_name/pr_name.txt)
           echo "base_content=$base_content"
+      
           
         
