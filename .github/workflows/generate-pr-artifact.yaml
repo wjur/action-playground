@@ -2,6 +2,8 @@
 
   on: [pull_request]
 
+  permissions: write-all
+
   jobs:
     generate-artifact:
       runs-on: ubuntu-20.04
@@ -17,3 +19,13 @@
             echo "Last coverage tag = $last_coverage_tag"
             coverage="${last_coverage_tag##*-}"
             echo "Last coverage = $coverage"
+        - name: Add label to PR
+          uses: actions/github-script@v7
+          with:
+            script: |
+              github.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                labels: ['low-coverage']
+              })
