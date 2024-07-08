@@ -35,7 +35,7 @@
               label_to_add="low-coverage"
             fi 
             
-            echo "label_to_add=$label_to_add"
+            echo "label_to_add=$label_to_add" >> "$GITHUB_OUTPUT"
 
         - name: Add label to PR
           if: ${{ steps.analyze-tags.outputs.label_to_add != '' }}
