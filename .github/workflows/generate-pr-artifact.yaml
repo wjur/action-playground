@@ -22,7 +22,7 @@
             coverage="${last_coverage_tag##*-}"
             echo "Last coverage = $coverage"
             
-            if [ "$my_variable" == "notfound" ]; then
+            if [ "$last_coverage_tag" == "notfound" ]; then
               label_to_add=""
             else
               lowers_coverage=$(echo "$coverage > $current_coverage" |bc -l)
@@ -33,7 +33,9 @@
               label_to_add="good-coverage"
             else
               label_to_add="low-coverage"
-            fi          
+            fi 
+            
+            echo "label_to_add=$label_to_add"
 
         - name: Add label to PR
           if: ${{ steps.analyze-tags.outputs.label_to_add != '' }}
