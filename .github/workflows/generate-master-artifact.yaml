@@ -10,7 +10,7 @@
       runs-on: ubuntu-20.04
       steps:
         - name: Create tag
-          uses: .github/workflows/coverage-add-tag.yaml
+          uses: ./.github/workflows/coverage-add-tag.yaml
           with:
             commit_sha: ${{ github.event.push.head_commit }}
             coverage: "0.8"
