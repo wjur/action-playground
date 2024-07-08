@@ -34,7 +34,7 @@
                 label_to_remove="good-coverage"
               else
                 label_to_add="good-coverage"
-                label_to_remove="end-coverage"
+                label_to_remove="low-coverage"
               fi 
             fi
             
