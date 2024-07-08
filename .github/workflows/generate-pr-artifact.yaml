@@ -67,3 +67,4 @@
                 issue_number: context.issue.number,
                 labels: ['${{ steps.analyze-tags.outputs.label_to_add }}']
               })
+
