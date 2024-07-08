@@ -12,7 +12,7 @@
             fetch-depth: 0
         - name: Analyze tags
           run: |
-            last_coverage_tag="(git describe --tags --abbrev=0 --match="coverage-*")"
+            last_coverage_tag=$(git describe --tags --abbrev=0 --match="coverage-*")
             echo "Last coverage tag = $last_coverage_tag"
             coverage="${last_coverage_tag##*-}"
             echo "Last coverage = $coverage"
