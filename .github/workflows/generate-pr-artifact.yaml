@@ -42,12 +42,35 @@
           uses: actions/github-script@v7
           with:
             script: |
-              github.rest.issues.removeLabel({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                labels: ['good-coverage', 'low-coverage']
-              })
+              try {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  name: 'good-coverage'
+                });
+              } catch (error) {
+                if (error.status !== 404) {
+                throw error;
+                } else {
+                console.log('Label good-coverage does not exist, continuing...');
+                }
+              }
+              
+              try {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  name: 'low-coverage'
+                });
+              } catch (error) {
+                if (error.status !== 404) {
+                throw error;
+                } else {
+                console.log('Label low-coverage does not exist, continuing...');
+                }
+              }
               
               github.rest.issues.addLabels({
                 owner: context.repo.owner,
