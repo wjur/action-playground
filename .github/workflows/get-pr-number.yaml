@@ -1,7 +1,10 @@
 name: get-pr-number
 
 on:
-  workflow_run: ["pr-artifact"]
+  workflow_run:
+    workflows: [ "pr-artifact" ]
+    types:
+      - completed
 
 jobs:
   setup:
