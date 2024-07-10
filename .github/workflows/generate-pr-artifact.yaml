@@ -2,6 +2,8 @@
 
   on: [pull_request]
 
+  permissions: write-all
+
   jobs:
     generate-artifact:
       runs-on: ubuntu-20.04
@@ -10,9 +12,59 @@
           uses: actions/checkout@v4
           with:
             fetch-depth: 0
+            ref: ${{ github.event.pull_request.head.sha }}
         - name: Analyze tags
+          id: analyze-tags
           run: |
-            last_coverage_tag=$(git describe --tags --abbrev=0 --match="coverage-*")
+            current_coverage="${{ github.event.pull_request.title }}"
+            last_coverage_tag=$(git describe --tags --abbrev=0 --first-parent --match="coverage-*" || echo "notfound")
             echo "Last coverage tag = $last_coverage_tag"
             coverage="${last_coverage_tag##*-}"
             echo "Last coverage = $coverage"
+            
+            if [ "$last_coverage_tag" == "notfound" ]; then
+              label_to_add=""
+              label_to_remove=""
+            else
+              lowers_coverage=$(echo "$coverage > $current_coverage" |bc -l)
+              echo "lowers_coverage = $lowers_coverage"
+        
+              if [ "$lowers_coverage" -ge "1" ]; then
+                label_to_add="low-coverage"
+                label_to_remove="good-coverage"
+              else
+                label_to_add="good-coverage"
+                label_to_remove="low-coverage"
+              fi 
+            fi
+            
+            echo "label_to_add=$label_to_add" >> "$GITHUB_OUTPUT"
+            echo "label_to_remove=$label_to_remove" >> "$GITHUB_OUTPUT"
+
+        - name: Add label to PR
+          if: ${{ steps.analyze-tags.outputs.label_to_add != '' }}
+          uses: actions/github-script@v7
+          with:
+            script: |
+              try {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  name: '${{ steps.analyze-tags.outputs.label_to_remove }}'
+                });
+              } catch (error) {
+                if (error.status !== 404) {
+                throw error;
+                } else {
+                console.log('Label ${{ steps.analyze-tags.outputs.label_to_remove }} does not exist, continuing...');
+                }
+              }
+              
+              github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                labels: ['${{ steps.analyze-tags.outputs.label_to_add }}']
+              })
+
