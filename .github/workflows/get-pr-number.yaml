@@ -13,8 +13,6 @@ jobs:
       - name: "Define constants"
         id: constants
         run: |
-          pr_number=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-                "https://api.github.com/repos/${{ github.repository }}/commits/${{ github.event.workflow_run.head_commit.id }}/pulls" \
-                | jq -r '.[0].number')
+          pr_number="${{ github.event.workflow_run.pull_requests[0].number }}"
           echo "pr_number=$pr_number" >> $GITHUB_OUTPUT
           echo "pr_number=$pr_number"
