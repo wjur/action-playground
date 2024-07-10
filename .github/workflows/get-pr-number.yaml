@@ -14,5 +14,6 @@ jobs:
         id: constants
         run: |
           pr_number="${{ github.event.workflow_run.pull_requests[0].number }}"
+          echo "json = ${{ toJSON(github.event.workflow_run.pull_requests) }}""
           echo "pr_number=$pr_number" >> $GITHUB_OUTPUT
           echo "pr_number=$pr_number"
